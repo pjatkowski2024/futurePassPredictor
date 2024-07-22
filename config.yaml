@@ -1,0 +1,75 @@
+# Config file
+# note that this file was originated in the auto137 project (https://github.com/altillimity/Auto137)
+# which is no longer active.  Elements were added for the future pass predictor such that the file is still compatible
+# with auto137 so that a single config file can be shared by both.  Because of this, there are some elements int the config
+# that are not uses by the future pass predictor.
+
+# Define your satellites here! Options names should be self-explanatory
+satellites:
+  - sat:
+    name: NOAA 15
+    norad: 25338
+    priority: 0
+    min_elevation: 20
+    frequency: 137.620
+    downlink: APT
+    delete_processed_files: true
+  - sat:
+    name: NOAA 18
+    norad: 28654
+    priority: 0
+    min_elevation: 20
+    frequency: 137.9125
+    downlink: APT
+    delete_processed_files: true
+  - sat:
+    name: NOAA 19
+    norad: 33591
+    priority: 0
+    min_elevation: 20
+    frequency: 137.100
+    downlink: APT
+    delete_processed_files: true
+  - sat:
+    name: METEOR-M 2 
+    norad: 40069
+    priority: 1
+    min_elevation: 20
+    frequency: 137.100
+    downlink: LRPT
+    delete_processed_files: true
+config:
+  # where the tle data lives
+  tle_file: "noaa.txt"
+  # How often should TLE data be updated?
+  tle_update_interval: 1
+  # Where will images and temporary files be stored
+  # path expansions are applied to the string value
+  output_dir: "../DATA"
+
+  # output for html passes
+  # the base directory is not used to expand this path, however ~user will work to specify a
+  # particular user home directory
+  html_output_file: 'passes.html'
+  html_elev_green_threshold: 70
+  html_elev_yellow_threshold: 50
+
+  # Your location
+  station:
+    latitude: 42.58
+    longitude: -82.9
+    elevation: 186
+  # Optional RSS feed. Using a webserver such as NGINX or Apache2 is recommended
+  rss:
+    enabled: true
+    webserver: false
+    port: 8080
+  # Run a command once files (images or raw) or done being processed
+  post_processing_hook:
+    # You can set any command here. {file} will be replace by the path to the file in the following format '/path/to/file'
+    command: "scp {file} user@remoteserver:/sample"
+    enabled: false
+    # If enabled the command will be ran once for each output file. If set to false {file} will instead be replaced by a series of paths, eg. '/path/to/file1' '/path/to/file2'
+    run_foreach: true
+  # Maximum overlap in minutes before a pass is entirely ignored
+  max_overlap: 7
