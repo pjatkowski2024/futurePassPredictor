@@ -7,22 +7,23 @@ should be shareable between the two projects.
 
 
 ### Overview
-* futurePassPredictor uses a local copy of the TLE data that can be easily be refreshed via command line.  
-  This keeps from hammering the TLE server and should be updated periodically (manually or via cron)
-* The list of satellites is configured in config.yaml
-* config.yaml in the current directory is used unless the --basedir option is used to specify an alternate directory.  
-  User expansion is used to process the basedir so things like ~/ or ~www as well as /var/www/htm/.. will work.
-* Paths in config.yaml (html_output_file, tle_file) also go through user expansion and accept the same types of  
+* futurePassPredictor uses a local copy of the TLE data that can be easily be refreshed via command line.  This keeps from hammering the TLE server and should be updated periodically (manually or via cron)
+* The list of satellites is configured in `config.yaml`
+* `config.yaml` in the current directory is used unless the `--basedir` option is used to specify an alternate directory.  
+  User expansion is used to process the basedir so things like `~/` or `~www` as well as `/var/www/htm/..` will work.
+* Paths in `config.yaml` (html_output_file, tle_file) also go through user expansion and accept the same types of  
   arguments.
-
+* `html_output_file` can be specified as `-` to write the command output rather than a file.
 ### Operation
-python3 futurePassPrecictor  # for config.yaml in the current directory
-python3 futurePassPredictor --basedir <someDirectory>  # for config.yaml in <someDirectory>
+`python3 futurePassPredictor`  # for config.yaml in the current directory
+`python3 futurePassPredictor --basedir <someDirectory>`  # for config.yaml in <someDirectory>
 
 see config.yaml for other inputs/parameters.
 
----
+Dependencies:
 
+* [orbit-predictor](https://github.com/satellogic/orbit-predictor) (Pass prediction)
+* `dominate`
 
 # Auto137 (for reference)
 

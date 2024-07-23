@@ -1,4 +1,5 @@
 import argparse
+import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -13,10 +14,6 @@ localTimeFormat = '%H:%M:%S'
 localDayFormat = '%m/%d/%Y'
 localDateTimeFormat = '%m/%d/%Y %H:%M:%S'
 
-print("------------------------------------------------------")
-print("            Starting FuturePass Predictor             ")
-print("------------------------------------------------------")
-print('\n')
 parser = argparse.ArgumentParser(description='Process command arguments.')
 parser.add_argument('--basedir', default='.',
                     help='i/o base directory, including config file. Defaults to current directory')
@@ -81,7 +78,7 @@ def printPasses(passes):
             sat.name, np.max_elevation_deg, sat.frequency, duration, aos_local, los_local))
 
 # build html document
-def htmlPasses(passes):
+def htmlPasses(output_fd, passes):
     strNow = startTimeUtc.replace(tzinfo=pytz.UTC).astimezone().strftime(localDateTimeFormat)
     doc = dominate.document(title='Future Passes as of ' + strNow)
     body = doc.body
@@ -139,11 +136,17 @@ def htmlPasses(passes):
         # print("%s maxElev=%.1f freq=%f dur=%.1f min aos=%s los=%s" % (
         # sat.name, np.max_elevation_deg, sat.frequency, duration, aos_local, los_local))
 
-    html_file_name = config.html_file;
-    html_file = open(html_file_name, "w")
-    html_file.write(doc.render())
-    html_file.close()
-    print(doc)
+    output_fd.write(str(doc))
 
 
-htmlPasses(passes)
+html_file_name = config.html_file;
+if html_file_name and html_file_name != '-':
+    fh = open(html_file_name, 'w')
+else:
+    fh = sys.stdout
+htmlPasses(fh, passes)
+if fh is not sys.stdout:
+            fh.close()
+
+
+
