@@ -43,7 +43,7 @@ def loadConfig(basedir, verbose=True):
     # Parse it
     config = yaml.load(f, Loader=yaml.FullLoader)
     # open the tle file from the correct directory
-    tle_file = Path(str(basedir) + '/' + config["config"]["tle_file"] ).expanduser()
+    tle_file = Path( config["config"]["tle_file"] ).expanduser()
     if verbose:
         print("TLE FILE: "+str(tle_file))
     html_file = str(  Path(config["config"]["html_output_file"]).expanduser())
