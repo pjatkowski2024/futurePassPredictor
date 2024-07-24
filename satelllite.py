@@ -1,9 +1,12 @@
+#!/usr/bin/python3
 import sys
 
 from orbit_predictor.sources import get_predictor_from_tle_lines, NoradTLESource
 import config
+
 if __name__ == '__main__':
-    sys.exit("can't run this file")
+    print("Can't run this file")
+    sys.exit()
 
 # Satellite class
 class Satellite:

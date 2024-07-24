@@ -23,7 +23,7 @@ args = parser.parse_args()
 # is the current directory. expanduser allows ~/ to be used for the home directory if desired
 baseDir = args.basedir
 p = Path(baseDir + '/config.yaml').expanduser()
-print("reading config from: " + str(p))
+#print("reading config from: " + str(p))
 
 # Parse config
 config.loadConfig(baseDir, verbose=False)
@@ -31,20 +31,19 @@ config.loadConfig(baseDir, verbose=False)
 
 # calculate passes starting at now - 12 hours so that recent passes are displayed
 passes = list()
-startTimeUtc = datetime.utcnow() - timedelta(hours=12)
-
+now = datetime.utcnow()
+startTimeUtc = now - timedelta(hours=24)
+endTimeUtc = now + timedelta(hours=24)
 # Lookup next passes of all satellites
 for satellite in config.satellites:
-    passCount = 5  # 5 passes per satellite
     predictionStartTime = startTimeUtc
     predictor = satellite.getPredictor()
 
-    while passCount > 0:
+    while predictionStartTime < endTimeUtc:
         next_pass = predictor.get_next_pass(config.location, when_utc=predictionStartTime,
                                             max_elevation_gt=satellite.min_elevation)
         max_elevation = next_pass.max_elevation_deg
         priority = satellite.priority
-        passCount = passCount - 1;
         predictionStartTime = next_pass.los
         # add to list
         passes.append([next_pass, satellite, max_elevation, priority])
@@ -80,9 +79,9 @@ def printPasses(passes):
 # build html document
 def htmlPasses(output_fd, passes):
     strNow = startTimeUtc.replace(tzinfo=pytz.UTC).astimezone().strftime(localDateTimeFormat)
-    doc = dominate.document(title='Future Passes as of ' + strNow)
+    doc = dominate.document(title='Satellite Passes as of ' + strNow)
     body = doc.body
-    body.add(h1('Future Passes as of ' + strNow))
+    body.add(h1('Satellite Passes as of ' + strNow))
 
     t = table()
     t.set_attribute('border', '1px solid')

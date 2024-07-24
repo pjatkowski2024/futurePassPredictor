@@ -1,8 +1,10 @@
+#!/usr/bin/python3
 import sys
 from pathlib import Path
 
 if __name__ == '__main__':
-    sys.exit("can't run this file")
+    print("Can't run this file")
+    sys.exit()
 
 import yaml
 import io
