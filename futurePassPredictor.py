@@ -1,3 +1,4 @@
+#!/usr/bin/python3 
 import argparse
 import sys
 from datetime import datetime, timedelta
@@ -138,7 +139,7 @@ def htmlPasses(output_fd, passes):
     output_fd.write(str(doc))
 
 
-html_file_name = config.html_file;
+html_file_name = config.html_file
 if html_file_name and html_file_name != '-':
     fh = open(html_file_name, 'w')
 else:
